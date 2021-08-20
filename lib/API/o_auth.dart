@@ -36,13 +36,28 @@ abstract class Auth {
     String? refreshToken,
   ) async {
     final prefs = await SharedPreferences.getInstance();
-    if (token != null) prefs.setString('strava_accessToken', token);
-    if (expiresAt != null)
+    if (token != null) {
+        prefs.setString('strava_accessToken', token);
+    } else {
+        prefs.remove('strava_accessToken');
+    }
+    if (expiresAt != null) {
       prefs.setInt('strava_expiresAt', expiresAt); // Stored in seconds
     // prefs.setInt('strava_expiresIn',
     //     expiresIn); // Value is valid at the time the token has been issued
-    if (scope != null) prefs.setString('strava_scope', scope);
-    if (refreshToken != null) prefs.setString('strava_refreshToken', refreshToken);
+    } else {
+        prefs.remove('strava_expiresAt');
+    }
+    if (scope != null) {
+        prefs.setString('strava_scope', scope);
+    } else {
+        prefs.remove('strava_scope');
+    }
+    if (refreshToken != null) {
+        prefs.setString('strava_refreshToken', refreshToken);
+    } else {
+        prefs.remove('strava_refreshToken');
+    }
 
     // Save also in globals to get direct access
     globals.token.accessToken = token;
